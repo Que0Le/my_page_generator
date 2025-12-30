@@ -1,0 +1,18 @@
+<div style="display: flex; gap: 2rem;">
+
+  <!-- Markdown Source -->
+  <section style="width: 40%;">
+    <h2>Markdown Source</h2>
+    <pre>{{ markdownText }}</pre>
+  </section>
+
+  <!-- Rendered HTML -->
+  <section style="width: 60%;">
+    <h2>Rendered HTML</h2>
+    <div
+      class="markdown-body"
+      [innerHTML]="renderedHtml()">
+    </div>
+  </section>
+
+</div>
