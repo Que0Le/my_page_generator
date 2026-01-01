@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { GithubContentService, DocFile } from './services/github-content.service';
+
+interface NavLink {
+  label: string;
+  path: string;
+}
 
 @Component({
   selector: 'app-navbar',
@@ -8,34 +14,43 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule],
   template: `
     <nav class="nav">
-      <a routerLink="/path1" routerLinkActive="active">Path 1</a>
-      <a routerLink="/path2" routerLinkActive="active">Path 2</a>
 
-      <!-- Spacer pushes dropdown to the end -->
+      <!-- Main links -->
+      <a
+        *ngFor="let link of mainLinks()"
+        [routerLink]="link.path"
+        routerLinkActive="active"
+      >
+        {{ link.label }}
+      </a>
+
       <span class="spacer"></span>
 
       <!-- Dropdown -->
       <div class="dropdown">
-        <button (click)="toggle()">More ▾</button>
+        <button (click)="toggle()">
+          More ▾
+        </button>
 
-        <div class="menu" *ngIf="open">
+        <div class="menu" *ngIf="open()">
           <a
-            *ngFor="let item of dropdownLinks"
-            [routerLink]="item.path"
-            (click)="open = false"
+            *ngFor="let link of dropdownLinks()"
+            [routerLink]="link.path"
+            (click)="close()"
           >
-            {{ item.label }}
+            {{ link.label }}
           </a>
         </div>
       </div>
+
     </nav>
   `,
   styles: [`
     .nav {
       display: flex;
       align-items: center;
-      background: #222;
       padding: 0.5rem 1rem;
+      background: #1f2937;
       color: white;
     }
 
@@ -46,7 +61,6 @@ import { RouterModule } from '@angular/router';
     }
 
     .active {
-      font-weight: bold;
       border-bottom: 2px solid white;
     }
 
@@ -59,7 +73,7 @@ import { RouterModule } from '@angular/router';
     }
 
     button {
-      background: #444;
+      background: #374151;
       color: white;
       border: none;
       padding: 0.4rem 0.7rem;
@@ -70,29 +84,58 @@ import { RouterModule } from '@angular/router';
       position: absolute;
       right: 0;
       top: 100%;
-      background: #333;
-      min-width: 150px;
+      background: #111827;
+      min-width: 160px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.4);
     }
 
     .menu a {
       display: block;
-      padding: 0.5rem;
+      padding: 0.5rem 0.75rem;
     }
 
     .menu a:hover {
-      background: #555;
+      background: #374151;
     }
   `]
 })
 export class NavbarComponent {
-  open = false;
 
-  dropdownLinks = [
-    { label: 'Path 3', path: '/path3' },
-    { label: 'Path 5', path: '/path5' }
-  ];
+  open = signal(false);
+  mainLinks = signal<NavLink[]>([]);
+  dropdownLinks = signal<NavLink[]>([]);
+
+  constructor(private github: GithubContentService) {
+    this.loadLinks();
+  }
+
+  async loadLinks() {
+    const files = await this.github.loadRepo();
+
+    const links = files.map(f => ({
+      path: f.urlPath,
+      label: this.labelFromPath(f.path)
+    }));
+
+    // first 2 = main nav, rest = dropdown
+    this.mainLinks.set(links.slice(0, 2));
+    this.dropdownLinks.set(links.slice(2));
+  }
 
   toggle() {
-    this.open = !this.open;
+    this.open.set(!this.open());
+  }
+
+  close() {
+    this.open.set(false);
+  }
+
+  private labelFromPath(path: string): string {
+    return path
+      .replace(/\.md$/, '')
+      .split('/')
+      .pop()!
+      .replace(/[-_]/g, ' ')
+      .replace(/\b\w/g, c => c.toUpperCase());
   }
 }

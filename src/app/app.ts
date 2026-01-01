@@ -25,19 +25,29 @@ import { NavbarComponent } from './navbar.component';
 // export class App {}
 
 
+// @Component({
+//   selector: 'app-root',
+//   standalone: true,
+//   imports: [
+//     RouterModule,     // 👈 needed for router-outlet
+//     NavbarComponent
+//   ],
+//   template: `
+//     <app-navbar></app-navbar>
+
+//     <main style="padding: 1rem;">
+//       <router-outlet></router-outlet>
+//     </main>
+//   `
+// })
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterModule,     // 👈 needed for router-outlet
-    NavbarComponent
-  ],
+  imports: [RouterModule, NavbarComponent],
   template: `
     <app-navbar></app-navbar>
-
-    <main style="padding: 1rem;">
-      <router-outlet></router-outlet>
-    </main>
+    <router-outlet></router-outlet>
   `
 })
 

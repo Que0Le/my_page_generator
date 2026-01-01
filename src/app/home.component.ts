@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { MarkdownService } from './markdown.service';
+import { MarkdownService } from './services/markdown.service';
 import { signal } from '@angular/core';
 
 @Component({
