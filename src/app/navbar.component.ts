@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { GithubContentService, DocFile } from './services/github-content.service';
+import { ConfigService } from './config/config.service';
 
 interface NavLink {
   label: string;
@@ -105,12 +106,12 @@ export class NavbarComponent {
   mainLinks = signal<NavLink[]>([]);
   dropdownLinks = signal<NavLink[]>([]);
 
-  constructor(private github: GithubContentService) {
+  constructor(private github: GithubContentService, private config: ConfigService) {
     this.loadLinks();
   }
 
   async loadLinks() {
-    const files = await this.github.loadRepo();
+    const files = await this.github.loadRepo(this.config.isMocked);
 
     const links = files.map(f => ({
       path: f.urlPath,

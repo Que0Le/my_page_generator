@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { GithubContentService, DocFile } from '../services/github-content.service';
 import { MarkdownService } from '../services/markdown.service';
+import { ConfigService } from '../config/config.service';
 
 @Component({
   standalone: true,
@@ -22,13 +23,14 @@ export class MarkdownPageComponent {
     private router: Router,
     private github: GithubContentService,
     private md: MarkdownService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private config: ConfigService
   ) {
     this.init();
   }
 
   async init() {
-    this.files = await this.github.loadRepo();
+    this.files = await this.github.loadRepo(this.config.isMocked);
 
     this.route.url.subscribe(() => {
       this.renderCurrentPage();
