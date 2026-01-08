@@ -42,11 +42,12 @@ export class MarkdownPageComponent {
     const file = this.files.find(f => f.urlPath === path);
 
     if (!file) {
+      console.log(`File not found for path '${path}'. Display 404.`);
       this.html.set(this.sanitizer.bypassSecurityTrustHtml('<h1>404</h1>'));
       return;
     }
-
-    const html = await this.md.toHtml(file.content);
+    let fileContent = await this.github.loadRawFile(this.config.isMocked, file.path);
+    const html = await this.md.toHtml(fileContent);
     this.html.set(this.sanitizer.bypassSecurityTrustHtml(html));
   }
 }

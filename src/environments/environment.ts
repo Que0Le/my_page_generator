@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  isMocked: true,
+  isMocked: false,
   github: {
     owner: 'Que0Le',
     repo: 'my_writing',

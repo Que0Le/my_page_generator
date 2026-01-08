@@ -10,17 +10,31 @@ export interface DocFile {
 
 @Injectable({ providedIn: 'root' })
 export class GithubContentService {
+  owner: string = "";
+  repo: string = "";
+  branch: string = "";
+  constructor(private config: ConfigService) {
+    this.owner = this.config.github.owner;
+    this.repo = this.config.github.repo;
+    this.branch = this.config.github.branch;
+  }
 
-  constructor(private config: ConfigService) {}
-
-//   owner = 'Que0Le';
-//   repo = 'my_writing';
-//   branch = 'main';
+  async loadRawFile(isMocked: boolean = false, filepath: string): Promise<string> {
+    let content = '';
+    if (isMocked) {
+      content = "123";
+    } else {
+      let rawUrl = `https://raw.githubusercontent.com/${this.owner}/${this.repo}/${this.branch}/${filepath}`;
+      content = await fetch(rawUrl).then((r) => r.text());
+    }
+    return content;
+  }
 
   async loadRepo(isMocked: boolean = false): Promise<DocFile[]> {
     if (isMocked) return this.loadRepoMocked();
     else return this.loadRepoGh();
   }
+
   async loadRepoMocked() {
     console.log('Mocked');
     return [
@@ -45,7 +59,7 @@ export class GithubContentService {
     ];
   }
 
-  async loadRepoGh() {
+  async loadRepoGh(shouldPreFetchContent: boolean = false) {
     const { owner, repo, branch } = this.config.github;
 
     // 1️⃣ Get repo tree
@@ -65,8 +79,9 @@ export class GithubContentService {
       let rawUrl = '';
       let content = '';
       rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${file.path}`;
-      content = await fetch(rawUrl).then(r => r.text());
-    //   content = '123';
+      if (shouldPreFetchContent) {
+        content = await fetch(rawUrl).then((r) => r.text());
+      }
 
       files.push({
         path: file.path,

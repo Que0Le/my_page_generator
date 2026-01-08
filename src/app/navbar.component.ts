@@ -119,7 +119,9 @@ export class NavbarComponent {
     }));
 
     // first 2 = main nav, rest = dropdown
-    this.mainLinks.set(links.slice(0, 2));
+    let linksForMain = links.slice(0, 2);
+    linksForMain.push({path: "google.com", label: "google.com"});
+    this.mainLinks.set(linksForMain);
     this.dropdownLinks.set(links.slice(2));
   }
 
