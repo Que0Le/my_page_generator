@@ -8,6 +8,15 @@ To start a local development server, run:
 
 ```bash
 ng serve
+# 
+npx serve -s dist/project1/browser
+```
+
+Nginx config for serving deep links:
+```
+location / {
+  try_files $uri $uri/ /index.html;
+}
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
