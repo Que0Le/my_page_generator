@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { AppConfig } from './app-config';
+import { EnvConfig } from './env-config';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService {
-  readonly config: AppConfig = environment;
+  readonly config: EnvConfig = environment;
 
   get github() {
     return this.config.github;
@@ -20,5 +20,9 @@ export class ConfigService {
   
   get isMocked() {
     return this.config.isMocked;
+  }
+
+  get cacheTimeout() {
+    return this.config.cacheTimeout;
   }
 }

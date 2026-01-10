@@ -7,5 +7,6 @@ export const environment = {
     branch: 'main'
   },
 
-  apiBaseUrl: 'https://api.myblog.com'
+  apiBaseUrl: 'https://api.myblog.com',
+  cacheTimeout: 1000,
 };

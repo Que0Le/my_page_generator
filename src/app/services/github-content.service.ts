@@ -13,6 +13,11 @@ export class GithubContentService {
   owner: string = "";
   repo: string = "";
   branch: string = "";
+
+  private cache: DocFile[] | null = null;
+  private loadingPromise: Promise<DocFile[]> | null = null;
+  private lastCacheUpdate: Date | undefined;
+
   constructor(private config: ConfigService) {
     this.owner = this.config.github.owner;
     this.repo = this.config.github.repo;
@@ -32,7 +37,22 @@ export class GithubContentService {
 
   async loadRepo(isMocked: boolean = false): Promise<DocFile[]> {
     if (isMocked) return this.loadRepoMocked();
-    else return this.loadRepoGh();
+
+    // Return cached data if not exceed timeout
+    if (
+      this.cache && this.lastCacheUpdate &&
+      new Date().getTime() - this.lastCacheUpdate.getTime() < this.config.cacheTimeout
+    ) {
+      return this.cache;
+    }
+    // Prevent duplicate concurrent fetches
+    if (this.loadingPromise) {
+      return this.loadingPromise;
+    }
+    this.cache = await this.loadRepoGh();
+    this.lastCacheUpdate = new Date();
+
+    return this.cache;
   }
 
   async loadRepoMocked() {
@@ -66,6 +86,14 @@ export class GithubContentService {
     const treeRes = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`
     );
+
+    if (!treeRes.ok) {
+      // TODO: raise error instead
+      console.log("Request tree from Github failed!")
+      let jsonContent = await treeRes.json();
+      console.log(`HTTP ${treeRes.status}: ${jsonContent}`)
+      return [];
+    }
 
     const tree = await treeRes.json();
 

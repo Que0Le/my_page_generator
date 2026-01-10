@@ -1,4 +1,4 @@
-export interface AppConfig {
+export interface EnvConfig {
   production: boolean;
   isMocked: boolean;
   apiBaseUrl: string;
@@ -7,4 +7,5 @@ export interface AppConfig {
     repo: string;
     branch: string;
   };
+  cacheTimeout: number;
 }

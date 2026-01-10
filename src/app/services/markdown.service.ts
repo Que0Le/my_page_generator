@@ -5,9 +5,8 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeStringify from 'rehype-stringify';
-// Theming
+
 import 'highlight.js/styles/github.css';
-import 'github-markdown-css/github-markdown.css';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,7 @@ export class MarkdownService {
       .use(remarkGfm)
       .use(remarkRehype)
       // .use(remarkToc, { heading: 'toc|table of contents' })
-      .use(rehypeHighlight)
+      .use(rehypeHighlight, { detect: true })
       .use(rehypeStringify)
       .process(markdown);
 
