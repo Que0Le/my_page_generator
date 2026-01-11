@@ -6,7 +6,7 @@ import remarkRehype from 'remark-rehype';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeStringify from 'rehype-stringify';
 
-import 'highlight.js/styles/github.css';
+// import 'highlight.js/styles/github.css';
 
 @Injectable({
   providedIn: 'root'

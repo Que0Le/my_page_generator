@@ -30,6 +30,7 @@ export class MarkdownPageComponent {
   }
 
   async init() {
+    // TODO: add other md sources. Files should include combined md objects
     this.files = await this.github.loadRepo(this.config.isMocked);
 
     this.route.url.subscribe(() => {
