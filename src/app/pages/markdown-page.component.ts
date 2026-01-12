@@ -39,6 +39,7 @@ export class MarkdownPageComponent {
   }
 
   async renderCurrentPage() {
+    console.log("md page component: url = ", this.router.url)
     const path = '/' + this.router.url.replace(/^\//, '');
     const file = this.files.find(f => f.urlPath === path);
 

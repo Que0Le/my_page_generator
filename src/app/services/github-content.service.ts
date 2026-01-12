@@ -17,6 +17,26 @@ export class GithubContentService {
   private cache: DocFile[] | null = null;
   private loadingPromise: Promise<DocFile[]> | null = null;
   private lastCacheUpdate: Date | undefined;
+  private mockedContent = [
+      {
+        path: 'blog/post1.md',
+        urlPath: '/blog/post1',
+        content: '# Post 1 content\n',
+        rawUrl: 'https://raw.githubusercontent.com/Que0Le/my_writing/main/blog/post1.md',
+      },
+      {
+        path: 'docs/note1.md',
+        urlPath: '/docs/note1',
+        content: '# This is docs note1\n',
+        rawUrl: 'https://raw.githubusercontent.com/Que0Le/my_writing/main/docs/note1.md',
+      },
+      {
+        path: 'readme.md',
+        urlPath: '/readme',
+        content: '# Readme for my writing\n',
+        rawUrl: 'https://raw.githubusercontent.com/Que0Le/my_writing/main/readme.md',
+      },
+    ]
 
   constructor(private config: ConfigService) {
     this.owner = this.config.github.owner;
@@ -27,7 +47,9 @@ export class GithubContentService {
   async loadRawFile(isMocked: boolean = false, filepath: string): Promise<string> {
     let content = '';
     if (isMocked) {
-      content = "123";
+      this.mockedContent.forEach(mc => {
+        if (mc.path === filepath) content = mc.content;
+      })
     } else {
       let rawUrl = `https://raw.githubusercontent.com/${this.owner}/${this.repo}/${this.branch}/${filepath}`;
       content = await fetch(rawUrl).then((r) => r.text());
@@ -57,26 +79,7 @@ export class GithubContentService {
 
   async loadRepoMocked() {
     console.log('Mocked');
-    return [
-      {
-        path: 'blog/post1.md',
-        urlPath: '/blog/post1',
-        content: '# Post 1\n',
-        rawUrl: 'https://raw.githubusercontent.com/Que0Le/my_writing/main/blog/post1.md',
-      },
-      {
-        path: 'docs/note1.md',
-        urlPath: '/note1',
-        content: '# This is docs note1\n',
-        rawUrl: 'https://raw.githubusercontent.com/Que0Le/my_writing/main/docs/note1.md',
-      },
-      {
-        path: 'readme.md',
-        urlPath: '/readme',
-        content: '# Readme for my writing\n',
-        rawUrl: 'https://raw.githubusercontent.com/Que0Le/my_writing/main/readme.md',
-      },
-    ];
+    return this.mockedContent;
   }
 
   async loadRepoGh(shouldPreFetchContent: boolean = false) {
@@ -124,6 +127,6 @@ export class GithubContentService {
   }
 
   private pathToUrl(path: string): string {
-    return '/' + path.replace(/\.md$/, '').replace(/^docs\//, ''); // optional
+    return '/' + path.replace(/\.md$/, ''); // optional
   }
 }

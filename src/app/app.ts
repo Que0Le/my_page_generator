@@ -40,6 +40,7 @@ import { NavbarComponent } from './navbar.component';
 //   `
 // })
 
+// TODO: footer
 @Component({
   selector: 'app-root',
   standalone: true,

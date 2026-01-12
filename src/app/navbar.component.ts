@@ -120,7 +120,10 @@ export class NavbarComponent {
 
     // first 2 = main nav, rest = dropdown
     let linksForMain = links.slice(0, 2);
+    console.log({linksForMain: linksForMain})
     linksForMain.push({path: "google.com", label: "google.com"});
+    linksForMain.push({path: "", label: "Home"})
+    linksForMain.push({path: "test", label: "Test"})
     this.mainLinks.set(linksForMain);
     this.dropdownLinks.set(links.slice(2));
   }
