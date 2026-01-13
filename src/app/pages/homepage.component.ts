@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DocFile, GithubContentService } from '../services/github-content.service';
@@ -23,51 +23,55 @@ interface Category {
   template: `
     <h1>Home</h1>
 
-    <section *ngFor="let category of categories" class="category">
-      <h2>{{ category.title }}</h2>
-
-      <ul class="post-list">
-        <li *ngFor="let post of category.posts">
-          <a [routerLink]="post.urlPath">
-            {{ post.label }}
-          </a>
-        </li>
-      </ul>
+    <section *ngIf="!loading()">
+      <section *ngFor="let cat of categories()">
+        <h2>{{ cat.title }}</h2>
+        <ul>
+          <li *ngFor="let post of cat.posts">
+            <a [routerLink]="post.urlPath">{{ post.label }}</a>
+          </li>
+        </ul>
+      </section>
     </section>
+
+    <p *ngIf="loading()">Loading content…</p>
   `,
-  styles: [`
-    h1 {
-      margin-bottom: 1.5rem;
-    }
+  styles: [
+    `
+      h1 {
+        margin-bottom: 1.5rem;
+      }
 
-    .category {
-      max-width: 700px;
-      margin: 1.5rem auto;
-    }
+      .category {
+        max-width: 700px;
+        margin: 1.5rem auto;
+      }
 
-    .post-list {
-      list-style: none;
-      padding-left: 1.5rem; /* 👈 indentation */
-    }
+      .post-list {
+        list-style: none;
+        padding-left: 1.5rem; /* 👈 indentation */
+      }
 
-    .post-list li {
-      margin: 0.4rem 0;
-    }
+      .post-list li {
+        margin: 0.4rem 0;
+      }
 
-    .post-list a {
-      color: #0969da;
-      text-decoration: none;
-      font-size: 1.05rem;
-    }
+      .post-list a {
+        color: #0969da;
+        text-decoration: none;
+        font-size: 1.05rem;
+      }
 
-    .post-list a:hover {
-      text-decoration: underline;
-    }
-  `]
+      .post-list a:hover {
+        text-decoration: underline;
+      }
+    `,
+  ],
 })
-export class HomePageComponent {
-  files: DocFile[] = [];
-  categories: Category[] = [];
+export class HomePageComponent implements OnInit {
+  files = signal<DocFile[]>([]);
+  categories = signal<Category[]>([]);
+  loading = signal(true);
 
   constructor(
     private route: ActivatedRoute,
@@ -76,32 +80,35 @@ export class HomePageComponent {
     private md: MarkdownService,
     private sanitizer: DomSanitizer,
     private config: ConfigService
-  ) {
-    this.init();
-  }
+  ) {}
 
-  async init() {
-    this.files = await this.github.loadRepo(this.config.isMocked);
-    let temp: Record<string, Category> = {};
-    this.files.forEach((file) => {
-      console.log(file)
+  async ngOnInit() {
+    const files = await this.github.loadRepo(this.config.isMocked);
+
+    this.files.set(files);
+
+    const objCategories: Record<string, Category> = {};
+
+    for (const file of files) {
       const match = file.urlPath.match(/^\/(\w+)\/(.+)/);
+
       if (match) {
         const [, group, rest] = match;
-        if (!temp[group]) {
-          temp[group] = {'title': group, posts: []};
-        }
-        temp[group].posts.push({ label: rest, urlPath: file.urlPath });
+        objCategories[group] ??= { title: group, posts: [] };
+        objCategories[group].posts.push({
+          label: rest,
+          urlPath: file.urlPath,
+        });
       } else {
-        // add direct link: first level
-        if (!temp['Main']) temp['Main'] = {'title': "Main", posts: []};;
-        temp['Main'].posts.push({ label: file.urlPath, urlPath: file.urlPath });
+        objCategories['Main'] ??= { title: 'Main', posts: [] };
+        objCategories['Main'].posts.push({
+          label: file.urlPath,
+          urlPath: file.urlPath,
+        });
       }
-    });
-    console.log({temp: temp})
-    for (const [key, value] of Object.entries(temp)) {
-      this.categories.push(value)
     }
+    // Set values and signal UI
+    this.categories.set(Object.values(objCategories));
+    this.loading.set(false);
   }
-
 }
