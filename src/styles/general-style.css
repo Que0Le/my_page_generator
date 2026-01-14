@@ -1,0 +1,4 @@
+.grid-container-4-items-1-line-equal-width {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
+}

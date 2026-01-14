@@ -123,6 +123,8 @@ export class NavbarComponent {
     linksForMain.push({ path: 'https://google.com', label: 'google.com', external: true });
     linksForMain.push({ path: '', label: 'Home', external: false });
     linksForMain.push({ path: 'test', label: 'Test', external: false });
+    linksForMain.push({ path: 'utils', label: 'Utils', external: false });
+    linksForMain.push({ path: 'countdown', label: 'countdown', external: false });
     this.mainLinks.set(linksForMain);
     this.dropdownLinks.set(links.slice(2));
   }
