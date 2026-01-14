@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './pages/homepage.component';
+import { HomePageComponent } from './pages/homepage';
 // import { TestComponent } from './pages/test.component';
-import { MarkdownPageComponent } from './pages/markdown-page.component';
-import { UtilsPageComponent } from './pages/utils-page.component';
+import { MarkdownPageComponent } from './pages/markdown-page';
+import { UtilsPageComponent } from './pages/utils-page';
 import { CountdownComponent } from './components/countdown';
 
 export const routes: Routes = [
