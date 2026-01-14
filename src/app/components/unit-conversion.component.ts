@@ -6,34 +6,103 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div style="max-width:300px;margin:2rem auto;text-align:center">
-      <div>
-        <h3>Inch - Cm</h3>
-        <div
-          style="display:grid;grid-template-columns:auto 1fr auto auto;
-          align-items: center;gap: 0.5rem;"
-        >
-          <label>Inch:</label>
+    <div class="converter-container">
+      <div class="card green">
+        <h3>Inch → Cm</h3>
+
+        <div class="row">
+          <label>Inch</label>
           <input type="number" min="1" (input)="onInputInchToCm($event)" />
-          <span>Cm:</span>
+          <span>Cm</span>
           <strong>{{ toCm() }}</strong>
         </div>
       </div>
-      <div>
-        <h3>Cm - Inch</h3>
-        <div>(Round to 4 decimal places)</div>
-        <div
-          style="display:grid;grid-template-columns:auto 1fr auto auto;
-          align-items: center;gap: 0.5rem;"
-        >
-          <label>Cm:</label>
+
+      <div class="card blue">
+        <h3>Cm → Inch</h3>
+        <small>(Round to 4 decimal places)</small>
+
+        <div class="row">
+          <label>Cm</label>
           <input type="number" min="1" (input)="onInputCmToInch($event)" />
-          <span>Inch:</span>
+          <span>Inch</span>
           <strong>{{ toInch() }}</strong>
         </div>
       </div>
     </div>
   `,
+  styles: [
+    `
+      .converter-container {
+        max-width: 360px;
+        margin: 2rem auto;
+        display: grid;
+        gap: 1.25rem;
+        font-family: system-ui, sans-serif;
+      }
+
+      .card {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .card h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .card small {
+        display: block;
+        margin-bottom: 0.75rem;
+        color: #666;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: auto 1fr auto max-content;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      label,
+      span {
+        font-weight: 500;
+      }
+
+      input {
+        padding: 0.45rem 0.5rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 0.95rem;
+      }
+
+      strong {
+        padding: 0.45rem 0.6rem;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.05);
+        white-space: nowrap; /* make sure to wrap text */
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+      }
+
+      /* Color themes */
+      .card.green {
+        border-left: 6px solid #2ecc71;
+      }
+
+      .card.blue {
+        border-left: 6px solid #3498db;
+      }
+    `,
+  ],
 })
 export class UnitConversionInchToCmComponent {
   private inputInch = 0;
