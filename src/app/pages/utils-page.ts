@@ -8,7 +8,7 @@ import { ConfigService } from '../config/config.service';
 import { CountdownComponent } from '../components/countdown';
 import { UnitConversionInchToCmComponent } from '../components/unit-conversions/unit-conversion';
 import { UnitConversionTempCFComponent } from '../components/unit-conversions/temp';
-
+import { UnitConversionCurrencyComponent } from '../components/unit-conversions/currency';
 @Component({
   standalone: true,
   imports: [
@@ -16,6 +16,7 @@ import { UnitConversionTempCFComponent } from '../components/unit-conversions/te
     CountdownComponent,
     UnitConversionInchToCmComponent,
     UnitConversionTempCFComponent,
+    UnitConversionCurrencyComponent
   ],
   template: `
     <article class="general-article" [innerHTML]="html()">
@@ -23,12 +24,12 @@ import { UnitConversionTempCFComponent } from '../components/unit-conversions/te
     </article>
     <div class="grid">
       <div class="row-2">
-        <app-countdown></app-countdown>
+        <unit-conversion-temp-c-f></unit-conversion-temp-c-f>
         <unit-conversion-inch-cm></unit-conversion-inch-cm>
       </div>
 
       <div class="row-3">
-        <unit-conversion-temp-c-f></unit-conversion-temp-c-f>
+        <unit-conversion-currency></unit-conversion-currency>
         <app-countdown></app-countdown>
         <app-countdown></app-countdown>
       </div>

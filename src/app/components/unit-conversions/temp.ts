@@ -36,6 +36,7 @@ import { CommonModule } from '@angular/common';
     </div>
   `
 })
+
 export class UnitConversionTempCFComponent {
   private inputC = 0;
   private inputF = 0;

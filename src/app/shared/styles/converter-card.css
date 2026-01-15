@@ -37,6 +37,19 @@
   gap: 0.5rem;
 }
 
+.row-6 {
+  display: grid;
+  grid-template-columns:
+    auto
+    1fr     /* first flexible value */
+    auto
+    auto
+    1fr     /* second flexible value */
+    auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 label,
 span {
   font-weight: 500;
