@@ -14,6 +14,7 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './navbar.component';
+import { BreadcrumbsComponent } from './components/breadcrumbs';
 
 // @Component({
 //   selector: 'app-root',
@@ -44,9 +45,10 @@ import { NavbarComponent } from './navbar.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, NavbarComponent],
+  imports: [RouterModule, NavbarComponent, BreadcrumbsComponent],
   template: `
     <app-navbar></app-navbar>
+    <app-breadcrumbs></app-breadcrumbs>
     <router-outlet></router-outlet>
   `
 })

@@ -5,18 +5,17 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { GithubContentService, DocFile } from '../services/github-content.service';
 import { MarkdownService } from '../services/markdown.service';
 import { ConfigService } from '../config/config.service';
-import { CountdownComponent } from '../components/countdown';
 import { UnitConversionInchToCmComponent } from '../components/unit-conversions/unit-conversion';
 import { UnitConversionTempCFComponent } from '../components/unit-conversions/temp';
 import { UnitConversionCurrencyComponent } from '../components/unit-conversions/currency';
+
 @Component({
   standalone: true,
   imports: [
     CommonModule,
-    CountdownComponent,
     UnitConversionInchToCmComponent,
     UnitConversionTempCFComponent,
-    UnitConversionCurrencyComponent
+    UnitConversionCurrencyComponent,
   ],
   template: `
     <article class="general-article" [innerHTML]="html()">
@@ -27,12 +26,7 @@ import { UnitConversionCurrencyComponent } from '../components/unit-conversions/
         <unit-conversion-temp-c-f></unit-conversion-temp-c-f>
         <unit-conversion-inch-cm></unit-conversion-inch-cm>
       </div>
-
-      <div class="row-3">
-        <unit-conversion-currency></unit-conversion-currency>
-        <app-countdown></app-countdown>
-        <app-countdown></app-countdown>
-      </div>
+      <unit-conversion-currency style="border-style: solid;"></unit-conversion-currency>
     </div>
   `,
   styles: [
@@ -70,7 +64,5 @@ export class UtilsPageComponent {
     private config: ConfigService
   ) {}
 
-  async ngOnInit() {
-    this.html.set('Test');
-  }
+  async ngOnInit() {}
 }

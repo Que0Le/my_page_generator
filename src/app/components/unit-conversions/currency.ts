@@ -8,14 +8,14 @@ import { ConfigService } from '../../config/config.service';
   imports: [CommonModule],
   styleUrls: ['../../shared/styles/converter-card.css'],
   template: `
-    <div class="converter-container">
+    <div class="converter-container-single-row">
       <div class="card blue">
         <h3>USD conversion</h3>
         <small>VND: {{ formatNumber(rate_USD_VND()) }} EUR: {{ rate_USD_EUR() }}</small>
         <small>last updated: {{ lastUpdatedUSD() }} </small>
         <div class="row-6">
           <input type="number" min="1" (input)="onInputUSD($event)" />
-          <label>USD</label>
+          <label>USD => </label>
           <strong>{{ formatNumber(conversion_USD_VND()) }}</strong>
           <span>VND</span>
           <strong>{{ conversion_USD_EUR() }}</strong>
@@ -29,7 +29,7 @@ import { ConfigService } from '../../config/config.service';
         <small>last updated: {{ lastUpdatedEUR() }} </small>
         <div class="row-6">
           <input type="number" min="1" (input)="onInputEUR($event)" />
-          <label>EUR</label>
+          <label>EUR =></label>
           <strong>{{ formatNumber(conversion_EUR_VND()) }}</strong>
           <span>VND</span>
           <strong>{{ conversion_EUR_USD() }}</strong>

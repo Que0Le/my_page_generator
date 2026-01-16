@@ -6,6 +6,14 @@
   font-family: system-ui, sans-serif;
 }
 
+.converter-container-single-row {
+  margin: 2rem auto;
+  display: grid;
+  gap: 1.25rem;
+  font-family: system-ui, sans-serif;
+}
+
+
 .card {
   padding: 1.25rem;
   border-radius: 12px;
@@ -32,7 +40,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: auto 1fr auto max-content;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   gap: 0.5rem;
 }
@@ -41,10 +49,10 @@
   display: grid;
   grid-template-columns:
     auto
-    1fr     /* first flexible value */
+    auto     /* first flexible value */
     auto
     auto
-    1fr     /* second flexible value */
+    auto     /* second flexible value */
     auto;
   align-items: center;
   gap: 0.5rem;
