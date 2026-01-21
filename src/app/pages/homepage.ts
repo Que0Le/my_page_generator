@@ -22,7 +22,15 @@ interface Category {
   imports: [CommonModule, RouterModule],
   template: `
     <h1>Home</h1>
-
+    <p>
+      This page is part of a continuously evolving project. 
+      I am building my own site generator based on Angular. 
+      Most of the content is written in Markdown, stored in a Git repository, 
+      and dynamically downloaded and rendered by the Angular web application. 
+      The site’s structure and routing are handled by an Angular app that 
+      serves as the skeleton for dynamic pages.
+      Some static sites will also be included, for example the utility page.
+    </p>
     <section *ngIf="!loading()">
       <section *ngFor="let cat of categories()">
         <h2>{{ cat.title }}</h2>

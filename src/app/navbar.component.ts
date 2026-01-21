@@ -118,13 +118,14 @@ export class NavbarComponent {
     }));
 
     // first 2 = main nav, rest = dropdown
-    let linksForMain = links.slice(0, 2);
-    console.log({ linksForMain: linksForMain });
-    linksForMain.push({ path: 'https://google.com', label: 'google.com', external: true });
+    let linksForMain = [];
     linksForMain.push({ path: '', label: 'Home', external: false });
-    linksForMain.push({ path: 'test', label: 'Test', external: false });
+    // linksForMain.push({ path: 'https://google.com', label: 'google.com', external: true });
+    // linksForMain.push({ path: 'test', label: 'Test', external: false });
     linksForMain.push({ path: 'utils', label: 'Utils', external: false });
-    linksForMain.push({ path: 'countdown', label: 'countdown', external: false });
+    linksForMain.push({ path: 'countdown', label: 'Countdown', external: false });
+    // linksForMain.push.apply(linksForMain, links.slice(0, 2));
+    console.log({ linksForMain: linksForMain });
     this.mainLinks.set(linksForMain);
     this.dropdownLinks.set(links.slice(2));
   }

@@ -11,11 +11,6 @@ export const routes: Routes = [
     pathMatch: 'full',
     component: HomePageComponent,
   },
-
-  {
-    path: 'test',
-    component: HomePageComponent,
-  },  
   {
     path: 'utils',
     component: UtilsPageComponent,
