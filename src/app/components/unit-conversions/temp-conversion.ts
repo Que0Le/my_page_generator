@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'unit-conversion-temp-c-f',
+  selector: 'temp-conversion',
   standalone: true,
   imports: [CommonModule],
   styleUrls: [
@@ -37,7 +37,7 @@ import { CommonModule } from '@angular/common';
   `
 })
 
-export class UnitConversionTempCFComponent {
+export class TempConversionComponent {
   private inputC = 0;
   private inputF = 0;
   toF = signal<number | null>(null);

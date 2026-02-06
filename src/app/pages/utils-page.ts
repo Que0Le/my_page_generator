@@ -5,16 +5,20 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { GithubContentService, DocFile } from '../services/github-content.service';
 import { MarkdownService } from '../services/markdown.service';
 import { ConfigService } from '../config/config.service';
-import { UnitConversionInchToCmComponent } from '../components/unit-conversions/unit-conversion';
-import { UnitConversionTempCFComponent } from '../components/unit-conversions/temp';
+import { LengthConversionComponent } from '../components/unit-conversions/length-conversion';
+import { TempConversionComponent } from '../components/unit-conversions/temp-conversion';
+import { MassConversionComponent } from '../components/unit-conversions/mass-conversion';
 import { UnitConversionCurrencyComponent } from '../components/unit-conversions/currency';
+import { VolumeConversionComponent } from '../components/unit-conversions/volume-conversion';
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
-    UnitConversionInchToCmComponent,
-    UnitConversionTempCFComponent,
+    LengthConversionComponent,
+    TempConversionComponent,
+    MassConversionComponent,
+    VolumeConversionComponent,
     UnitConversionCurrencyComponent,
   ],
   template: `
@@ -23,8 +27,10 @@ import { UnitConversionCurrencyComponent } from '../components/unit-conversions/
     </article>
     <div class="grid">
       <div class="row-2">
-        <unit-conversion-temp-c-f></unit-conversion-temp-c-f>
-        <unit-conversion-inch-cm></unit-conversion-inch-cm>
+        <temp-conversion></temp-conversion>
+        <length-conversion></length-conversion>
+        <mass-conversion></mass-conversion>
+        <volume-conversion></volume-conversion>
       </div>
       <unit-conversion-currency></unit-conversion-currency>
     </div>

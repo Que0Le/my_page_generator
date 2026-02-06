@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'unit-conversion-inch-cm',
+  selector: 'length-conversion',
   standalone: true,
   imports: [CommonModule],
   styleUrls: [
@@ -35,7 +35,7 @@ import { CommonModule } from '@angular/common';
     </div>
   `
 })
-export class UnitConversionInchToCmComponent {
+export class LengthConversionComponent {
   private inputInch = 0;
   private inputCm = 0;
   toCm = signal<number | null>(null);

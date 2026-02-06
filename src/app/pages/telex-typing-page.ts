@@ -21,7 +21,7 @@ import { FormsModule } from '@angular/forms';
               id="telex-input"
               [(ngModel)]="rawText"
               (input)="convert()"
-              placeholder="e.g. Tieengs Vieetj thaatj tuyetj vowif..."
+              placeholder="e.g. Tieesng vieejt, not 'Tieengs Vieetj'"
             >
             </textarea>
           </div>
