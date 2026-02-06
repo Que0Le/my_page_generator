@@ -31,16 +31,16 @@ export class MarkdownPageComponent {
 
   async init() {
     // TODO: add other md sources. Files should include combined md objects
-    this.files = await this.github.loadRepo(this.config.isMocked);
-
+    
     this.route.url.subscribe(() => {
       this.renderCurrentPage();
     });
   }
-
+  
   async renderCurrentPage() {
     console.log("md page component: url = ", this.router.url)
     const path = '/' + this.router.url.replace(/^\//, '');
+    this.files = await this.github.loadRepo(this.config.isMocked);
     const file = this.files.find(f => f.urlPath === path);
 
     if (!file) {

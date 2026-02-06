@@ -1,12 +1,23 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { DocFile, GithubContentService } from '../services/github-content.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ConfigService } from '../config/config.service';
+import { MarkdownService } from '../services/markdown.service';
 
+interface PostLink {
+  label: string;
+  urlPath: string;
+}
+
+interface Category {
+  title: string;
+  posts: PostLink[];
+}
 
 @Component({
-  selector: 'app-home',
+  selector: 'table-of-content',
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
@@ -20,6 +31,16 @@ import { ConfigService } from '../config/config.service';
       serves as the skeleton for dynamic pages.
       Some static sites will also be included, for example the utility page.
     </p>
+    <section *ngIf="!loading()">
+      <section *ngFor="let cat of categories()">
+        <h2>{{ cat.title }}</h2>
+        <ul>
+          <li *ngFor="let post of cat.posts">
+            <a [routerLink]="post.urlPath">{{ post.label }}</a>
+          </li>
+        </ul>
+      </section>
+    </section>
 
     <p *ngIf="loading()">Loading content…</p>
   `,
@@ -55,43 +76,47 @@ import { ConfigService } from '../config/config.service';
     `,
   ],
 })
-export class HomePageComponent implements OnInit {
+export class ToCPageComponent implements OnInit {
+  files = signal<DocFile[]>([]);
+  categories = signal<Category[]>([]);
   loading = signal(true);
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private github: GithubContentService,
+    private md: MarkdownService,
     private sanitizer: DomSanitizer,
     private config: ConfigService
   ) {}
 
   async ngOnInit() {
-    // const files = await this.github.loadRepo(this.config.isMocked);
+    const files = await this.github.loadRepo(this.config.isMocked);
 
-    // this.files.set(files);
+    this.files.set(files);
 
-    // const objCategories: Record<string, Category> = {};
+    const objCategories: Record<string, Category> = {};
 
-    // for (const file of files) {
-    //   const match = file.urlPath.match(/^\/(\w+)\/(.+)/);
+    for (const file of files) {
+      const match = file.urlPath.match(/^\/(\w+)\/(.+)/);
 
-    //   if (match) {
-    //     const [, group, rest] = match;
-    //     objCategories[group] ??= { title: group, posts: [] };
-    //     objCategories[group].posts.push({
-    //       label: rest,
-    //       urlPath: file.urlPath,
-    //     });
-    //   } else {
-    //     objCategories['Main'] ??= { title: 'Main', posts: [] };
-    //     objCategories['Main'].posts.push({
-    //       label: file.urlPath,
-    //       urlPath: file.urlPath,
-    //     });
-    //   }
-    // }
-    // // Set values and signal UI
-    // this.categories.set(Object.values(objCategories));
+      if (match) {
+        const [, group, rest] = match;
+        objCategories[group] ??= { title: group, posts: [] };
+        objCategories[group].posts.push({
+          label: rest,
+          urlPath: file.urlPath,
+        });
+      } else {
+        objCategories['Main'] ??= { title: 'Main', posts: [] };
+        objCategories['Main'].posts.push({
+          label: file.urlPath,
+          urlPath: file.urlPath,
+        });
+      }
+    }
+    // Set values and signal UI
+    this.categories.set(Object.values(objCategories));
     this.loading.set(false);
   }
 }

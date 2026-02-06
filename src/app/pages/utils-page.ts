@@ -26,7 +26,7 @@ import { UnitConversionCurrencyComponent } from '../components/unit-conversions/
         <unit-conversion-temp-c-f></unit-conversion-temp-c-f>
         <unit-conversion-inch-cm></unit-conversion-inch-cm>
       </div>
-      <unit-conversion-currency style="border-style: solid;"></unit-conversion-currency>
+      <unit-conversion-currency></unit-conversion-currency>
     </div>
   `,
   styles: [
@@ -38,7 +38,6 @@ import { UnitConversionCurrencyComponent } from '../components/unit-conversions/
       }
 
       .row-2 {
-        border-style: solid;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;

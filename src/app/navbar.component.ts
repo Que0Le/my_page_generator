@@ -104,30 +104,32 @@ export class NavbarComponent {
   mainLinks = signal<NavLink[]>([]);
   dropdownLinks = signal<NavLink[]>([]);
 
-  constructor(private github: GithubContentService, private config: ConfigService) {
+  constructor(/*private github: GithubContentService, private config: ConfigService*/) {
     this.loadLinks();
   }
 
   async loadLinks() {
-    const files = await this.github.loadRepo(this.config.isMocked);
+    // const files = await this.github.loadRepo(this.config.isMocked);
 
-    const links = files.map((f) => ({
-      path: f.urlPath,
-      label: this.labelFromPath(f.path),
-      external: false,
-    }));
+    // const links = files.map((f) => ({
+    //   path: f.urlPath,
+    //   label: this.labelFromPath(f.path),
+    //   external: false,
+    // }));
 
     // first 2 = main nav, rest = dropdown
     let linksForMain = [];
     linksForMain.push({ path: '', label: 'Home', external: false });
     // linksForMain.push({ path: 'https://google.com', label: 'google.com', external: true });
     // linksForMain.push({ path: 'test', label: 'Test', external: false });
+    linksForMain.push({ path: 'toc', label: 'Table of Content', external: false });
     linksForMain.push({ path: 'utils', label: 'Utils', external: false });
+    linksForMain.push({ path: 'telex', label: 'Telex', external: false });
     linksForMain.push({ path: 'countdown', label: 'Countdown', external: false });
     // linksForMain.push.apply(linksForMain, links.slice(0, 2));
     console.log({ linksForMain: linksForMain });
     this.mainLinks.set(linksForMain);
-    this.dropdownLinks.set(links.slice(2));
+    // this.dropdownLinks.set(links.slice(2));
   }
 
   toggle() {
