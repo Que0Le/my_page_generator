@@ -46,17 +46,29 @@ interface NavLink {
   styles: [
     `
       .nav {
+        /* Make navbar stick to top */
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        /* fixed height so breadcrumbs can offset correctly */
+        --navbar-height: 56px;
+        height: var(--navbar-height);
+
         display: flex;
         align-items: center;
-        padding: 0.5rem 1rem;
+        padding: 0 1rem;
         background: #1f2937;
         color: white;
+        box-shadow: 0 1px 0 rgba(0,0,0,0.25);
       }
 
       a {
         color: white;
         text-decoration: none;
         margin-right: 1rem;
+        line-height: var(--navbar-height);
+        display: inline-block;
       }
 
       .active {

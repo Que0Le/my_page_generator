@@ -30,8 +30,14 @@ interface Crumb {
   styles: [
     `
       .breadcrumbs {
+        /* Keep breadcrumbs visible under the sticky navbar */
+        position: sticky;
+        top: 56px; /* matches navbar height */
+        z-index: 900;
+        background: white;
         max-width: 90%;
-        margin: 0.75rem auto 1rem;
+        margin: 0.5rem auto 1rem;
+        padding: 0.35rem 0.25rem;
         font-size: 0.9rem;
         color: #555;
       }
